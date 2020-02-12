@@ -1,4 +1,4 @@
-package com.example.taskmaster;
+package com.coots.taskmaster;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.example.taskmaster", appContext.getPackageName());
+        assertEquals("com.coots.taskmaster", appContext.getPackageName());
     }
 }

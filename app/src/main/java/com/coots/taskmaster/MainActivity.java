@@ -1,11 +1,15 @@
-package com.example.taskmaster;
+package com.coots.taskmaster;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,29 +18,56 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button addTask = findViewById(R.id.button);
-        addTask.setOnClickListener(new View.OnClickListener() {
+        TextView taskTextView = findViewById(R.id.textView);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String username = sharedPreferences.getString("username", "user");
+        if(username == ""){
+            username = "user";
+        }
+        taskTextView.setText(username + "'s tasks.");
+
+        Button addTaskButton = findViewById(R.id.button);
+        addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent addTaskIntent = new Intent(MainActivity.this, AddTask.class);
-                MainActivity.this.startActivity(addTaskIntent);
+                Intent goToAddTaskIntent = new Intent(MainActivity.this, AddTask.class);
+                MainActivity.this.startActivity(goToAddTaskIntent);
+            }
+        });
+
+        Button allTasksButton = findViewById(R.id.button2);
+        allTasksButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent gotToAllTasksIntent = new Intent(MainActivity.this, AllTasks.class);
+                MainActivity.this.startActivity(gotToAllTasksIntent);
             }
         });
 
 
 
 
-        Button allTaskButton = findViewById(R.id.button2);
-        allTaskButton.setOnClickListener(new View.OnClickListener() {
+        Button settingsButton = findViewById(R.id.settings);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent allTasksIntent = new Intent(MainActivity.this, AllTasks.class);
-                MainActivity.this.startActivity(allTasksIntent);
+                Intent gotToSettingslIntent = new Intent(MainActivity.this, Settings.class);
+                MainActivity.this.startActivity(gotToSettingslIntent);
             }
         });
+
     }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        TextView taskTextView = findViewById(R.id.textView);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String username = sharedPreferences.getString("username", "user");
+        taskTextView.setText(username + "'s tasks.");
 
+    }
 }
