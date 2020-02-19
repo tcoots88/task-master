@@ -25,9 +25,8 @@ Start building an Android app that will be a main focus of the second half of th
 ## Challenge Description
 <!-- Description of the challenge -->
 Create a Task class. A Task should have a title, a body, and a state. The state should be one of “new”, “assigned”, “in progress”, or “complete”.
-#### 13FEB2020
+#### 19FEB2020
 <!-- What approach did you take? Why? What is the Big O space/time for this approach? -->
-
 
 Instituted the recycle view to populate tasks 
 
@@ -35,6 +34,25 @@ Instituted the recycle view to populate tasks
 
 #### Image
 ![image description](screenshots/ScreenshotDayThree.png)
+
+
+
+#  TaskMaster 
+<!-- Short summary or background information -->
+Start building an Android app that will be a main focus of the second half of the course: TaskMaster.
+## Challenge Description
+<!-- Description of the challenge -->
+Refactor your model layer to store Task data in a local database.#### 13FEB2020
+<!-- What approach did you take? Why? What is the Big O space/time for this approach? -->
+
+Connected to database and ran first test through espresso using emulator..
+TODO: Run espresso without emulator
+
+<br>
+
+#### Image
+![image description](screenshots/ScreenshotDayThree.png)
+
 
 
 

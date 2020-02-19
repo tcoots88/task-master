@@ -73,11 +73,6 @@ public class TaskFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            List<Task> listOfTasks = new LinkedList<>();
-            listOfTasks.add(new Task("Do Laundry", "Please do Laundry", "new"));
-            listOfTasks.add(new Task("Cleanup", "Clean the house", "assigned"));
-            listOfTasks.add(new Task("Make Dinner", "Dinner for Three", "complete"));
-            recyclerView.setAdapter(new MyTaskRecyclerViewAdapter(listOfTasks, null));
         }
         return view;
     }
@@ -89,6 +84,8 @@ public class TaskFragment extends Fragment {
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         }
+
+
 //        else {
 //            throw new RuntimeException(context.toString()
 //                    + " must implement OnListFragmentInteractionListener");

@@ -1,27 +1,45 @@
 package com.coots.taskmaster;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
+
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.util.LinkedList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    private List<Task> taskList = new LinkedList<>();
+    public TaskDatabase taskDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        taskDatabase = Room.databaseBuilder(getApplicationContext(), TaskDatabase.class, "task_database").allowMainThreadQueries().build();
+        this.taskList = taskDatabase.taskDAO().getAll();
+
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new MyTaskRecyclerViewAdapter(this.taskList, null, this));
+
         TextView taskTextView = findViewById(R.id.userTask);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String username = sharedPreferences.getString("username", "User");
+        String username = sharedPreferences.getString("username", "user");
         if(username == ""){
             username = "user";
         }
@@ -47,16 +65,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         ImageButton settingsButton = findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent gotToSettingslIntent = new Intent(MainActivity.this, Settings.class);
-                MainActivity.this.startActivity(gotToSettingslIntent);
+                Intent gotToSettingsIntent = new Intent(MainActivity.this, Settings.class);
+                MainActivity.this.startActivity(gotToSettingsIntent);
             }
         });
+
+
+
 
     }
 
@@ -69,4 +89,15 @@ public class MainActivity extends AppCompatActivity {
         taskTextView.setText(username + "'s tasks.");
 
     }
+
+
+    public void sendMessage(View view) {
+        Intent intent = new Intent(this, TaskDetail.class);
+        TextView title = findViewById(R.id.title);
+        String titleString = title.getText().toString();
+        intent.putExtra("task", titleString);
+        startActivity(intent);
+
+    }
+
 }
