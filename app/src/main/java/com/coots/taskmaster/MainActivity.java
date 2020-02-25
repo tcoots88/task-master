@@ -39,8 +39,10 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+
 import static com.amazonaws.mobile.client.UserState.SIGNED_IN;
 import static com.amazonaws.mobile.client.UserState.SIGNED_OUT;
+
 
 
 public class MainActivity extends Activity implements MyTaskRecyclerViewAdapter.TaskListener {
@@ -229,9 +231,11 @@ public class MainActivity extends Activity implements MyTaskRecyclerViewAdapter.
                 }
             }
 
+
             @Override
             public void onFailure(@Nonnull ApolloException e) {
                 Log.e(TAG, e.toString());
             }
         };
 }
+
