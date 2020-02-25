@@ -34,7 +34,7 @@ public class Settings extends AppCompatActivity {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("username", username);
                 editor.apply();
-                Toast saveToast = Toast.makeText(getApplicationContext(), "SAVED", Toast.LENGTH_SHORT);
+                Toast saveToast = Toast.makeText(getApplicationContext(), "Saved!", Toast.LENGTH_SHORT);
                 saveToast.show();
                 Intent goHomeIntent = new Intent(Settings.this, MainActivity.class);
                 Settings.this.startActivity(goHomeIntent);

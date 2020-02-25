@@ -60,7 +60,7 @@ public class MainActivityTest {
         appCompatEditText.perform(replaceText("new taskTitle"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.desciptEditText),
+                allOf(withId(R.id.descriptionEditText),
                         childAtPosition(
                                 allOf(withId(R.id.constraintLayout),
                                         childAtPosition(
@@ -71,7 +71,7 @@ public class MainActivityTest {
         appCompatEditText2.perform(replaceText("new desc"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.desciptEditText), withText("new desc"),
+                allOf(withId(R.id.descriptionEditText), withText("new desc"),
                         childAtPosition(
                                 allOf(withId(R.id.constraintLayout),
                                         childAtPosition(

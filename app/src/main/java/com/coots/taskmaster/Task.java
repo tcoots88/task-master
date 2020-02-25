@@ -3,6 +3,7 @@ package com.coots.taskmaster;
 
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 
@@ -12,15 +13,27 @@ public class Task {
     @PrimaryKey(autoGenerate = true)
     long id;
 
+
+    String dynamoDBId;
     String title;
     String body;
     String state;
 
+
+    @Ignore
     public Task(String title, String body, String state) {
         this.title = title;
         this.body = body;
         this.state = state;
     }
+
+    public Task(String title, String body, String state, String dynamoDBId) {
+        this.title = title;
+        this.body = body;
+        this.state = state;
+        this.dynamoDBId =dynamoDBId;
+    }
+
 
     public String getTitle() {
         return title;
@@ -44,5 +57,17 @@ public class Task {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getDynamoDBId() {
+        return dynamoDBId;
+    }
+
+    public void setDynamoDBId(String dynamoDBId) {
+        this.dynamoDBId = dynamoDBId;
     }
 }
