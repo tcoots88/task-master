@@ -111,4 +111,13 @@ public class MainActivity extends AppCompatActivity implements MyTaskRecyclerVie
         MainActivity.this.startActivity(taskDetailIntent);
 
     }
+        @Override
+    public void onListFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
 }
