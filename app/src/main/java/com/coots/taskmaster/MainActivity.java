@@ -21,7 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements MyTaskRecyclerViewAdapter.TaskListener {
+public class MainActivity extends AppCompatActivity implements MyTaskRecyclerViewAdapter.TaskListener, TaskFragment.OnListFragmentInteractionListener {
 
     private String TAG= "pvd.main";
     private List<Task> taskList = new LinkedList<>();
