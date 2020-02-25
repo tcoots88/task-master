@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 public class AddTask extends AppCompatActivity {
 
-    public TaskDatabase taskDatabase;
+    TaskDatabase taskDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.coots.taskmaster.TaskFragment.OnListFragmentInteractionListener;
 
@@ -18,61 +19,58 @@ import java.util.List;
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecyclerViewAdapter.ViewHolder> {
+public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecyclerViewAdapter.TasksViewHolder> {
 
-    private final List<Task> mValues;
-    private final OnListFragmentInteractionListener mListener;
-    private final Context mContext;
+    private final List<Task> tasks;
+    private final TaskListener listener;
 
-    public MyTaskRecyclerViewAdapter(List<Task> items, OnListFragmentInteractionListener listener, Context context) {
-        mValues = items;
-        mListener = listener;
-        mContext = context;
+    public MyTaskRecyclerViewAdapter(List<Task> tasks, TaskListener listener) {
+        this.tasks = tasks;
+        this.listener = listener;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TasksViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_task, parent, false);
-        return new ViewHolder(view);
+
+        final TasksViewHolder tasksViewHolder = new TasksViewHolder(view);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClickOnTaskCallback(tasksViewHolder.task);
+            }
+        });
+        return tasksViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.mItem = mValues.get(position);
-        holder.mTitleView.setText(mValues.get(position).title);
-        holder.mStatusView.setText(mValues.get(position).state);
+    public void onBindViewHolder(final TasksViewHolder holder, final int position) {
+        holder.task = tasks.get(position);
+        holder.taskTitleView.setText(tasks.get(position).title);
+//        holder.mBodyView.setText(mValues.get(position).body);
+        holder.taskStatusView.setText(tasks.get(position).state);
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Context context = v.getContext();
-                // Notify the active callbacks interface (the activity, if the
-                // fragment is attached to one) that an item has been selected.
-                Intent taskDetail = new Intent(mContext, TaskDetail.class);
-                taskDetail.putExtra("id", mValues.get(position).id);
-                context.startActivity(taskDetail);
-            }
-        });
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return tasks.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mTitleView;
+    public class TasksViewHolder extends RecyclerView.ViewHolder {
+        public final View view;
+        public final TextView taskTitleView;
         //        public final TextView mBodyView;
-        public final TextView mStatusView;
-        public Task mItem;
+        public final TextView taskStatusView;
+        public Task task;
 
-        public ViewHolder(View view) {
-            super(view);
-            mView = view;
-            mTitleView = view.findViewById(R.id.title);
-            mStatusView = view.findViewById(R.id.status);
+        public TasksViewHolder(View v) {
+            super(v);
+            view = v;
+            taskTitleView = (TextView) view.findViewById(R.id.taskTitle);
+//            mBodyView = (TextView) view.findViewById(R.id.content);
+            taskStatusView = (TextView) view.findViewById(R.id.taskState);
         }
 
 
@@ -80,9 +78,13 @@ public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecycl
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mTitleView.getText() + "'";
+            return super.toString() + " '" + taskTitleView.getText() + "'";
         }
 
+    }
+
+    public static interface TaskListener{
+        public void onClickOnTaskCallback(Task task);
     }
 
 }

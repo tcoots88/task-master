@@ -56,3 +56,14 @@ TODO: Run espresso without emulator
 
 
 
+## Taskmaster
+
+### 20 Feb 2020
+
+- Add RecyclerView to All Task Activity to display all tasks from DB. When clicked on a toast appears with details on the task.
+
+<br>
+
+#### Image
+
+

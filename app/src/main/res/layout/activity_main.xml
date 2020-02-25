@@ -78,6 +78,7 @@
         android:layout_height="300dp"
         app:layout_constraintEnd_toEndOf="@id/recyclerView"
         app:layout_constraintStart_toStartOf="@id/recyclerView"
-        app:layout_constraintTop_toTopOf="@+id/recyclerView" />
+        app:layout_constraintTop_toTopOf="@+id/recyclerView"
+        tools:layout="@layout/fragment_task_list" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,10 +4,14 @@
     <string name="detail">detail</string>
     <string name="task_title">Task title</string>
     <string name="add_task">Add Task</string>
-    <string name="add_tasks">Add Tasks</string>
     <string name="submitted">Submitted</string>
     <string name="task_description">Task description</string>
     <string name="task">Task</string>
     <string name="description">Alohamora wand elf parchment, Wingardium Leviosa hippogriff, house dementors betrayal. Holly, Snape centaur portkey ghost Hermione spell bezoar Scabbers. Peruvian-Night-Powder werewolf, Dobby pear-tickle half-moon-glasses, Knight-Bus. Padfoot snargaluff seeker: Hagrid broomstick mischief managed. Snitch Fluffy rock-cake, 9 ¾ dress robes I must not tell lies. Mudbloods yew pumpkin juice phials Ravenclaw’s Diadem 10 galleons Thieves Downfall. Ministry-of-Magic mimubulus mimbletonia Pigwidgeon knut phoenix feather other minister Azkaban. Hedwig Daily Prophet treacle tart full-moon Ollivanders You-Know-Who cursed. Fawkes maze raw-steak Voldemort Goblin Wars snitch Forbidden forest grindylows wool socks."</string>
     <string name="status">status</string>
+    <string name="my_tasks">My Tasks</string>
+    <string name="all_tasks">All Tasks</string>
+    <string name="todo">TODO</string>
+    <string name="username">username</string>
+    <string name="save">Save</string>
 </resources>
