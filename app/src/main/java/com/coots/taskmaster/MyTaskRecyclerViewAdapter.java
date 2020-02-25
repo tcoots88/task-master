@@ -2,6 +2,8 @@ package com.coots.taskmaster;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +22,12 @@ public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecycl
 
     private final List<Task> mValues;
     private final OnListFragmentInteractionListener mListener;
+    private final Context mContext;
 
-    public MyTaskRecyclerViewAdapter(List<Task> items, OnListFragmentInteractionListener listener) {
+    public MyTaskRecyclerViewAdapter(List<Task> items, OnListFragmentInteractionListener listener, Context context) {
         mValues = items;
         mListener = listener;
+        mContext = context;
     }
 
     @Override
@@ -34,20 +38,20 @@ public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecycl
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mItem = mValues.get(position);
         holder.mTitleView.setText(mValues.get(position).title);
-        holder.mBodyView.setText(mValues.get(position).body);
         holder.mStatusView.setText(mValues.get(position).state);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
+                Context context = v.getContext();
+                // Notify the active callbacks interface (the activity, if the
+                // fragment is attached to one) that an item has been selected.
+                Intent taskDetail = new Intent(mContext, TaskDetail.class);
+                taskDetail.putExtra("id", mValues.get(position).id);
+                context.startActivity(taskDetail);
             }
         });
     }
@@ -60,21 +64,25 @@ public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecycl
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mTitleView;
-        public final TextView mBodyView;
+        //        public final TextView mBodyView;
         public final TextView mStatusView;
         public Task mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mTitleView = (TextView) view.findViewById(R.id.title);
-            mBodyView = (TextView) view.findViewById(R.id.content);
-            mStatusView = (TextView) view.findViewById(R.id.status);
+            mTitleView = view.findViewById(R.id.title);
+            mStatusView = view.findViewById(R.id.status);
         }
+
+
+
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mBodyView.getText() + "'";
+            return super.toString() + " '" + mTitleView.getText() + "'";
         }
+
     }
+
 }
