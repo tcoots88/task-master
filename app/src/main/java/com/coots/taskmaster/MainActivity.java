@@ -165,6 +165,7 @@ public class MainActivity extends Activity implements MyTaskRecyclerViewAdapter.
 
 
 
+
         }
 
         @SuppressLint("SetTextI18n")
@@ -236,3 +237,4 @@ public class MainActivity extends Activity implements MyTaskRecyclerViewAdapter.
             }
         };
 }
+
