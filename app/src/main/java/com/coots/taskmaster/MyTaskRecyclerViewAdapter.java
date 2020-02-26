@@ -83,8 +83,8 @@ public class MyTaskRecyclerViewAdapter extends RecyclerView.Adapter<MyTaskRecycl
 
     }
 
-    public static interface TaskListener{
-        public void onClickOnTaskCallback(Task task);
+    public  interface TaskListener{
+         void onClickOnTaskCallback(Task task);
     }
 
 }

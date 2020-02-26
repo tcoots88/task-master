@@ -1,6 +1,7 @@
 package com.coots.taskmaster;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
@@ -8,14 +9,17 @@ import java.util.List;
 
 
 @Dao
-public abstract class TaskDAO {
-    @Query("SELECT * FROM task ORDER BY id DESC")
-    abstract List<Task> getAll();
+public interface TaskDAO {
 
-    @Query("SELECT * FROM task WHERE id= :id")
-    abstract Task getOne(long id);
+    @Query("SELECT * FROM task ORDER BY id DESC")
+    List<Task> getAll();
+
+    @Query("SELECT * FROM task WHERE dynamoDBId = :dynamoDBId")
+    Task getOne(String dynamoDBId);
 
     @Insert
-    abstract void save(Task task);
+    void save(Task task);
 
+    @Delete
+    void delete(Task task);
 }

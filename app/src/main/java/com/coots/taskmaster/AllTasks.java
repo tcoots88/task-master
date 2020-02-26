@@ -34,7 +34,7 @@ public class AllTasks extends AppCompatActivity implements MyTaskRecyclerViewAda
         this.taskList = taskDatabase.taskDAO().getAll();
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new MyTaskRecyclerViewAdapter(this.taskList,null));
+        recyclerView.setAdapter(new MyTaskRecyclerViewAdapter(this.taskList,this));
 
 
     }
