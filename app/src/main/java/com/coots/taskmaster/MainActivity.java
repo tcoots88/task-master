@@ -32,6 +32,7 @@ import com.amazonaws.mobile.config.AWSConfiguration;
 import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient;
 import com.amazonaws.mobileconnectors.appsync.fetcher.AppSyncResponseFetchers;
 import com.apollographql.apollo.GraphQLCall;
+import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 
 import java.util.LinkedList;
@@ -58,34 +59,34 @@ public class MainActivity extends Activity implements MyTaskRecyclerViewAdapter.
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
-            AWSMobileClient.getInstance().initialize(getApplicationContext(), new Callback<UserStateDetails>() {
-
-                        @Override
-                        public void onResult(final UserStateDetails userStateDetails) {
-                            Log.i("INIT", "onResult: " + userStateDetails.getUserState());
-                            if(userStateDetails.getUserState() == SIGNED_OUT){
-                                // 'this' refers the the current active activity
-                                AWSMobileClient.getInstance().showSignIn(MainActivity.this, new Callback<UserStateDetails>() {
-                                    @Override
-                                    public void onResult(UserStateDetails result) {
-                                        Log.d(TAG, "onResult: " + result.getUserState());
-                                    }
-
-                                    @Override
-                                    public void onError(Exception e) {
-                                        Log.e(TAG, "onError: ", e);
-                                    }
-                                });
-                            }
-
-                        }
-
-                        @Override
-                        public void onError(Exception e) {
-                            Log.e("INIT", "Initialization error.", e);
-                        }
-                    }
-            );
+//            AWSMobileClient.getInstance().initialize(getApplicationContext(), new Callback<UserStateDetails>() {
+//
+//                        @Override
+//                        public void onResult(final UserStateDetails userStateDetails) {
+//                            Log.i("INIT", "onResult: " + userStateDetails.getUserState());
+//                            if(userStateDetails.getUserState() == SIGNED_OUT){
+//                                // 'this' refers the the current active activity
+//                                AWSMobileClient.getInstance().showSignIn(MainActivity.this, new Callback<UserStateDetails>() {
+//                                    @Override
+//                                    public void onResult(UserStateDetails result) {
+//                                        Log.d(TAG, "onResult: " + result.getUserState());
+//                                    }
+//
+//                                    @Override
+//                                    public void onError(Exception e) {
+//                                        Log.e(TAG, "onError: ", e);
+//                                    }
+//                                });
+//                            }
+//
+//                        }
+//
+//                        @Override
+//                        public void onError(Exception e) {
+//                            Log.e("INIT", "Initialization error.", e);
+//                        }
+//                    }
+//            );
 
             taskDatabase = Room.databaseBuilder(getApplicationContext(), TaskDatabase.class, "task_database").allowMainThreadQueries().build();
 
@@ -184,7 +185,7 @@ public class MainActivity extends Activity implements MyTaskRecyclerViewAdapter.
             Intent intent = new Intent(this, TaskDetail.class);
             TextView title = findViewById(R.id.taskTitle);
             String titleString = title.getText().toString();
-            intent.putExtra("task", titleString);
+            intent.putExtra("taskTitle", titleString);
             startActivity(intent);
 
         }

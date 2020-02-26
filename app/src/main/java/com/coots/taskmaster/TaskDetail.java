@@ -47,15 +47,20 @@ public class TaskDetail extends AppCompatActivity {
                 .awsConfiguration(new AWSConfiguration(getApplicationContext()))
                 .build();
 
-        String id = getIntent().getStringExtra("id");
-        Log.i(TAG, id + " was clicked");
-        Task oneTask = taskDatabase.taskDAO().getOne(id);
+        String title = getIntent().getStringExtra("taskTitle");
         TextView taskTextView = findViewById(R.id.taskTitle);
-        taskTextView.setText(oneTask.title);
-        TextView descriptionEditText = findViewById(R.id.taskBody);
-        descriptionEditText.setText(oneTask.body);
-        TextView statusTextView = findViewById(R.id.taskStatus);
-        statusTextView.setText(oneTask.state);
+        taskTextView.setText(title);
+
+//
+//        String id = getIntent().getStringExtra("id");
+//        Log.i(TAG, id + " was clicked");
+//        Task oneTask = taskDatabase.taskDAO().getOne(id);
+//        TextView taskTextView = findViewById(R.id.taskTitle);
+//        taskTextView.setText(oneTask.title);
+//        TextView descriptionEditText = findViewById(R.id.taskBody);
+//        descriptionEditText.setText(oneTask.body);
+//        TextView statusTextView = findViewById(R.id.taskStatus);
+//        statusTextView.setText(oneTask.state);
 
 
 //    @Override

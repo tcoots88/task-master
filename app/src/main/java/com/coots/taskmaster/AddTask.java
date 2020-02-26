@@ -1,16 +1,15 @@
 package com.coots.taskmaster;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import com.amazonaws.amplify.generated.graphql.CreateTaskMutation;
 import com.amazonaws.mobile.config.AWSConfiguration;
@@ -19,8 +18,8 @@ import com.apollographql.apollo.GraphQLCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 
-
 import javax.annotation.Nonnull;
+
 import type.CreateTaskInput;
 
 
@@ -39,7 +38,9 @@ public class AddTask extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
 
-        taskDatabase = Room.databaseBuilder(getApplicationContext(), TaskDatabase.class, "task_database").allowMainThreadQueries().build();
+        taskDatabase = Room.databaseBuilder(getApplicationContext(), TaskDatabase.class, "task_database")
+                .fallbackToDestructiveMigration()
+                .allowMainThreadQueries().build();
 
         awsAppSyncClient = AWSAppSyncClient.builder()
                 .context(getApplicationContext())
@@ -53,8 +54,8 @@ public class AddTask extends AppCompatActivity {
 
                 EditText titleEditText = findViewById(R.id.titleEditText);
                 String newTitle = titleEditText.getText().toString();
-                EditText descriptEditText = findViewById(R.id.descriptionEditText);
-                String newDescription = descriptEditText.getText().toString();
+                EditText descriptionEditText = findViewById(R.id.descriptionEditText);
+                String newDescription = descriptionEditText.getText().toString();
 
 
                 addOneTaskToDynamoDB(newTitle, newDescription);
