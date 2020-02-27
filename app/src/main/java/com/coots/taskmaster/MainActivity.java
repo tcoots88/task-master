@@ -31,6 +31,7 @@ import com.amazonaws.mobile.client.UserStateDetails;
 import com.amazonaws.mobile.config.AWSConfiguration;
 import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient;
 import com.amazonaws.mobileconnectors.appsync.fetcher.AppSyncResponseFetchers;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferService;
 import com.apollographql.apollo.GraphQLCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
@@ -59,34 +60,35 @@ public class MainActivity extends Activity implements MyTaskRecyclerViewAdapter.
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
-//            AWSMobileClient.getInstance().initialize(getApplicationContext(), new Callback<UserStateDetails>() {
-//
-//                        @Override
-//                        public void onResult(final UserStateDetails userStateDetails) {
-//                            Log.i("INIT", "onResult: " + userStateDetails.getUserState());
-//                            if(userStateDetails.getUserState() == SIGNED_OUT){
-//                                // 'this' refers the the current active activity
-//                                AWSMobileClient.getInstance().showSignIn(MainActivity.this, new Callback<UserStateDetails>() {
-//                                    @Override
-//                                    public void onResult(UserStateDetails result) {
-//                                        Log.d(TAG, "onResult: " + result.getUserState());
-//                                    }
-//
-//                                    @Override
-//                                    public void onError(Exception e) {
-//                                        Log.e(TAG, "onError: ", e);
-//                                    }
-//                                });
-//                            }
-//
-//                        }
-//
-//                        @Override
-//                        public void onError(Exception e) {
-//                            Log.e("INIT", "Initialization error.", e);
-//                        }
-//                    }
-//            );
+            getApplicationContext().startService(new Intent(getApplicationContext(), TransferService.class));
+            AWSMobileClient.getInstance().initialize(getApplicationContext(), new Callback<UserStateDetails>() {
+
+                        @Override
+                        public void onResult(final UserStateDetails userStateDetails) {
+                            Log.i("INIT", "onResult: " + userStateDetails.getUserState());
+                            if(userStateDetails.getUserState() == SIGNED_OUT){
+                                // 'this' refers the the current active activity
+                                AWSMobileClient.getInstance().showSignIn(MainActivity.this, new Callback<UserStateDetails>() {
+                                    @Override
+                                    public void onResult(UserStateDetails result) {
+                                        Log.d(TAG, "onResult: " + result.getUserState());
+                                    }
+
+                                    @Override
+                                    public void onError(Exception e) {
+                                        Log.e(TAG, "onError: ", e);
+                                    }
+                                });
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            Log.e("INIT", "Initialization error.", e);
+                        }
+                    }
+            );
 
             taskDatabase = Room.databaseBuilder(getApplicationContext(), TaskDatabase.class, "task_database").allowMainThreadQueries().build();
 
@@ -108,6 +110,15 @@ public class MainActivity extends Activity implements MyTaskRecyclerViewAdapter.
             TextView taskTextView = findViewById(R.id.userTask);
             String username = AWSMobileClient.getInstance().getUsername();
             System.out.println(username);
+
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("username", username);
+            editor.apply();
+//
+            if (username == null){
+                username = sharedPreferences.getString("username", "User");
+            }
 
             taskTextView.setText(username + "'s tasks.");
 
@@ -173,8 +184,15 @@ public class MainActivity extends Activity implements MyTaskRecyclerViewAdapter.
             super.onResume();
             TextView taskTextView = findViewById(R.id.userTask);
             String username = AWSMobileClient.getInstance().getUsername();
-            System.out.println("username = " + username);
 
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("username", username);
+            editor.apply();
+
+            if (username == null){
+                username = sharedPreferences.getString("username", "User");
+            }
             taskTextView.setText(username + "'s tasks.");
             getAllTasksFromDynamoDB();
 
