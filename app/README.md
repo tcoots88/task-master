@@ -55,6 +55,28 @@ TODO: Run espresso without emulator
 
 
 
+#  TaskMaster 
+<!-- Short summary or background information -->
+Initialized Cognito and enabled login.  Also got S3 enabled
+## Challenge Description
+<!-- Description of the challenge -->
+Refactor your model layer to store Task data in a local database.
+
+
+<!-- What approach did you take? Why? What is the Big O space/time for this approach? -->
+
+
+<br>
+
+#### Image
+
+
+
+
+
+
+
+
 
 ## Taskmaster
 
