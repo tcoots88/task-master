@@ -9,6 +9,7 @@ import androidx.room.Room;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -31,17 +32,21 @@ import com.amazonaws.mobile.client.UserStateDetails;
 import com.amazonaws.mobile.config.AWSConfiguration;
 import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient;
 import com.amazonaws.mobileconnectors.appsync.fetcher.AppSyncResponseFetchers;
+import com.amazonaws.mobileconnectors.pinpoint.PinpointConfiguration;
+import com.amazonaws.mobileconnectors.pinpoint.PinpointManager;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferService;
 import com.apollographql.apollo.GraphQLCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import static com.amazonaws.mobile.client.UserState.SIGNED_IN;
 import static com.amazonaws.mobile.client.UserState.SIGNED_OUT;
 
 
@@ -51,6 +56,7 @@ public class MainActivity extends Activity implements MyTaskRecyclerViewAdapter.
         private String TAG= "pvd.main";
         private List<Task> taskList = new LinkedList<>();
         TaskDatabase taskDatabase;
+        private static PinpointManager pinpointManager;
 
         private AWSAppSyncClient awsAppSyncClient;
 
@@ -109,7 +115,6 @@ public class MainActivity extends Activity implements MyTaskRecyclerViewAdapter.
 
             TextView taskTextView = findViewById(R.id.userTask);
             String username = AWSMobileClient.getInstance().getUsername();
-            System.out.println(username);
 
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -198,15 +203,15 @@ public class MainActivity extends Activity implements MyTaskRecyclerViewAdapter.
 
         }
 
-
-        public void sendMessage(View view) {
-            Intent intent = new Intent(this, TaskDetail.class);
-            TextView title = findViewById(R.id.taskTitle);
-            String titleString = title.getText().toString();
-            intent.putExtra("taskTitle", titleString);
-            startActivity(intent);
-
-        }
+//
+//        public void sendMessage(View view) {
+//            Intent intent = new Intent(this, TaskDetail.class);
+//            TextView title = findViewById(R.id.taskTitle);
+//            String titleString = title.getText().toString();
+//            intent.putExtra("taskTitle", titleString);
+//            startActivity(intent);
+//
+//        }
 
         @Override
         public void onClickOnTaskCallback(Task task) {
@@ -253,4 +258,43 @@ public class MainActivity extends Activity implements MyTaskRecyclerViewAdapter.
                 Log.e(TAG, e.toString());
             }
         };
+
+    public static PinpointManager getPinpointManager(final Context applicationContext) {
+        if (pinpointManager == null) {
+            final AWSConfiguration awsConfig = new AWSConfiguration(applicationContext);
+            AWSMobileClient.getInstance().initialize(applicationContext, awsConfig, new Callback<UserStateDetails>() {
+                @Override
+                public void onResult(UserStateDetails userStateDetails) {
+                    Log.i("INIT", userStateDetails.getUserState().toString());
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    Log.e("INIT", "Initialization error.", e);
+                }
+            });
+
+            PinpointConfiguration pinpointConfig = new PinpointConfiguration(
+                    applicationContext,
+                    AWSMobileClient.getInstance(),
+                    awsConfig);
+
+            pinpointManager = new PinpointManager(pinpointConfig);
+
+            FirebaseInstanceId.getInstance().getInstanceId()
+                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                        @Override
+                        public void onComplete(@NonNull com.google.android.gms.tasks.Task<InstanceIdResult> task) {
+                            if (!task.isSuccessful()) {
+                                Log.w(TAG, "getInstanceId failed", task.getException());
+                                return;
+                            }
+                            final String token = task.getResult().getToken();
+                            Log.d(TAG, "Registering push notifications token: " + token);
+                            pinpointManager.getNotificationClient().registerDeviceToken(token);
+                        }
+                    });
+        }
+        return pinpointManager;
+    }
 }
