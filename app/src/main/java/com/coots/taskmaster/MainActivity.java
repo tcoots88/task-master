@@ -181,6 +181,7 @@ public class MainActivity extends Activity implements MyTaskRecyclerViewAdapter.
 
 
 
+
         }
 
         @SuppressLint("SetTextI18n")
@@ -259,6 +260,7 @@ public class MainActivity extends Activity implements MyTaskRecyclerViewAdapter.
             }
         };
 
+
     public static PinpointManager getPinpointManager(final Context applicationContext) {
         if (pinpointManager == null) {
             final AWSConfiguration awsConfig = new AWSConfiguration(applicationContext);
@@ -298,3 +300,4 @@ public class MainActivity extends Activity implements MyTaskRecyclerViewAdapter.
         return pinpointManager;
     }
 }
+
