@@ -1,0 +1,40 @@
+{
+//  "project_info": {
+//    "project_number": "893921706361",
+//    "firebase_url": "https://taskmaster-e9d0a.firebaseio.com",
+//    "project_id": "taskmaster-e9d0a",
+//    "storage_bucket": "taskmaster-e9d0a.appspot.com"
+//  },
+//  "client": [
+//    {
+//      "client_info": {
+//        "mobilesdk_app_id": "1:893921706361:android:d474b85087b748debfafa8",
+//        "android_client_info": {
+//          "package_name": "com.coots.taskmaster"
+//        }
+//      },
+//      "oauth_client": [
+//        {
+//          "client_id": "893921706361-82da2nqnopfjd433nrlb51uqhidjui6c.apps.googleusercontent.com",
+//          "client_type": 3
+//        }
+//      ],
+//      "api_key": [
+//        {
+//          "current_key": "AIzaSyBMuylOt9ztY2XVTbi507_EoRSpAQhn79k"
+//        }
+//      ],
+//      "services": {
+//        "appinvite_service": {
+//          "other_platform_oauth_client": [
+//            {
+//              "client_id": "893921706361-82da2nqnopfjd433nrlb51uqhidjui6c.apps.googleusercontent.com",
+//              "client_type": 3
+//            }
+//          ]
+//        }
+//      }
+//    }
+//  ],
+//  "configuration_version": "1"
+}

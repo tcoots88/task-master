@@ -220,7 +220,7 @@ node_modules/
 aws-exports.js
 awsconfiguration.json
 amplifyconfiguration.json
-!app-debug.apk
+!../app-debug.apk
 
 # End of https://www.gitignore.io/api/java,macos,android,androidstudio
 **markdown-navigator.xml

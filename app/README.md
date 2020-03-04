@@ -74,10 +74,6 @@ Refactor your model layer to store Task data in a local database.
 
 
 
-
-
-
-
 ## Taskmaster
 
 ### 20 Feb 2020
@@ -87,5 +83,29 @@ Refactor your model layer to store Task data in a local database.
 <br>
 
 #### Image
+
+
+
+
+## Taskmaster
+
+### 27 Feb 2020
+
+
+  -  User can upload task image to S3 and display on the task detail page.
+
+<br>
+
+#### Image
+
+## Taskmaster
+
+### 03 Mar 2020
+
+ - working on push notifications
+
+
+
+
 
 
