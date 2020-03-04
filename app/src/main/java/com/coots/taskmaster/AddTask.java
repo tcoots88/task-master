@@ -52,9 +52,7 @@ public class AddTask extends AppCompatActivity {
 
     private String TAG = "pvd.addTask";
 
-
     TaskDatabase taskDatabase;
-    //AWS Database
     private AWSAppSyncClient awsAppSyncClient;
 
     ImageView file;
@@ -65,56 +63,57 @@ public class AddTask extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
 
-        taskDatabase = Room.databaseBuilder(getApplicationContext(), TaskDatabase.class, "task_database")
-                .fallbackToDestructiveMigration()
-                .allowMainThreadQueries().build();
+        taskDatabase = Room.databaseBuilder(getApplicationContext(), TaskDatabase.class, "task_database").allowMainThreadQueries().build();
 
         awsAppSyncClient = AWSAppSyncClient.builder()
                 .context(getApplicationContext())
                 .awsConfiguration(new AWSConfiguration(getApplicationContext()))
                 .build();
 
-        Button attachFileButton = findViewById(R.id.attachFileButton); /////////
-
-
         file = findViewById(R.id.imageUpload);
-        attachFileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent grabFileIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                grabFileIntent.setType("file/*");
-                startActivity(grabFileIntent);
+
+        Intent intent = getIntent();
+
+        String intentType = intent.getType();
+        if (intentType != null && intentType.contains("image/")) {
+            // Handle intents with image data ...
+            Uri imageURI = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+            if(imageURI != null) {
+                if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
+                } else {
+                    Log.i(TAG + " imageURI", imageURI.toString());
+                    onImagePicked(imageURI);
+                }
             }
-        });
-
-
-
-        public void submit(View v) {
-
-            EditText titleEditText = findViewById(R.id.titleEditText);
-            String newTitle = titleEditText.getText().toString();
-            System.out.println("newtitle" +newTitle);
-            EditText descriptionEditText = findViewById(R.id.descriptionEditText);
-            String newDescription = descriptionEditText.getText().toString();
-
-
-            addOneTaskToDynamoDB(newTitle, newDescription, "public/" + uuid);
-
-            //Toasts
-            Toast submitToast = Toast.makeText(getApplicationContext(), "Submitted!", Toast.LENGTH_SHORT);
-            submitToast.show();
-//                Intent gotToMainActivityIntent = new Intent(AddTask.this, MainActivity.class);
-//                AddTask.this.startActivity(gotToMainActivityIntent);
-
         }
 
     }
+    public void submit(View v) {
 
-    public void addOneTaskToDynamoDB(String title, String body){
+        EditText titleEditText = findViewById(R.id.titleEditText);
+        String newTitle = titleEditText.getText().toString();
+        System.out.println("newtitle" +newTitle);
+        EditText descriptionEditText = findViewById(R.id.descriptionEditText);
+        String newDescription = descriptionEditText.getText().toString();
+
+
+        addOneTaskToDynamoDB(newTitle, newDescription, "public/" + uuid);
+
+        //Toasts
+        Toast submitToast = Toast.makeText(getApplicationContext(), "Submitted!", Toast.LENGTH_SHORT);
+        submitToast.show();
+//                Intent gotToMainActivityIntent = new Intent(AddTask.this, MainActivity.class);
+//                AddTask.this.startActivity(gotToMainActivityIntent);
+
+    }
+
+    public void addOneTaskToDynamoDB(String title, String body, String uri) {
         CreateTaskInput createTaskInput = CreateTaskInput.builder().
                 title(title).
                 body(body).
                 state("New").
+                uri(uri).
                 build();
 
         awsAppSyncClient.mutate(CreateTaskMutation.builder().input(createTaskInput).build())
@@ -141,8 +140,9 @@ public class AddTask extends AppCompatActivity {
         public void onFailure(@Nonnull ApolloException e) {
             Log.e(TAG, e.toString());
         }
- };
-    public void  uploadWithTransferUtility(Uri uri) {
+    };
+
+    public void uploadWithTransferUtility(Uri uri) {
 
         String[] filePathColumn = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContentResolver().query(uri,
@@ -157,13 +157,13 @@ public class AddTask extends AppCompatActivity {
                 TransferUtility.builder()
                         .context(getApplicationContext())
                         .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
-                        .s3Client(new AmazonS3Client(AWSMobileClient.getInstance(), Region.getRegion(Regions.EU_WEST_2)))
+                        .s3Client(new AmazonS3Client(AWSMobileClient.getInstance(), Region.getRegion(Regions.US_WEST_2)))
                         .build();
 
         uuid = UUID.randomUUID().toString();
         TransferObserver uploadObserver =
                 transferUtility.upload(
-                        "amplify-taskmaster-env-113605",
+                        "taskmaster879d0b8cad184fecbff2609a8bf14c8c210659-todo",
                         "public/" + uuid,
                         new File(picturePath));
 
@@ -241,10 +241,14 @@ public class AddTask extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // Get the URI that points to the selected contact
                 Uri imageURI = intent.getData();
-
-                file.setImageURI(imageURI);
-                uploadWithTransferUtility(imageURI);
+                Log.i(TAG + " imageURI",imageURI.toString());
+                onImagePicked(imageURI);
             }
         }
+    }
+
+    public void onImagePicked(Uri uri){
+        file.setImageURI(uri);
+        uploadWithTransferUtility(uri);
     }
 }
