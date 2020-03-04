@@ -18,20 +18,23 @@ public class Task {
     String title;
     String body;
     String state;
+    String uri;
 
 
     @Ignore
-    public Task(String title, String body, String state) {
+    public Task(String title, String body, String state, String uri) {
         this.title = title;
         this.body = body;
         this.state = state;
+        this.uri = uri;
     }
 
-    public Task(String title, String body, String state, String dynamoDBId) {
+    public Task(String title, String body, String state, String dynamoDBId, String uri) {
         this.title = title;
         this.body = body;
         this.state = state;
         this.dynamoDBId =dynamoDBId;
+        this.uri = uri;
     }
 
 
@@ -69,5 +72,13 @@ public class Task {
 
     public void setDynamoDBId(String dynamoDBId) {
         this.dynamoDBId = dynamoDBId;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public String getUri() {
+        return uri;
     }
 }
